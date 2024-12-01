@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Number Guessing Game</title>
+</head>
+<body>
+<h2>Number Guessing Game</h2>
+<p>Guess a number between 1 and 100:</p>
+<input type="number" id="guessInput" min="1" max="100">
+<button onclick="checkGuess()">Guess</button>
+<button onclick="startGame()">Restart Game</button>
+<button onclick="provideHint()">Get a Hint</button> <!-- New button for hints -->
+<p id="feedback"></p>
+<p id="tries"></p>
+<script>
+  let targetNumber;
+  let tries = 0;
+  let triesLeft;
+ const MAXTRIES = 5;
+  function startGame() {
+      targetNumber = Math.floor(Math.random() * 100) + 1;
+      tries = 0;
+      document.getElementById('feedback').textContent = "Start a new game, guess a number between 1 and 100.";
+      document.getElementById('guessInput').value = '';
+      document.getElementsByTagName('p')[1].style.color = "blue";
+      document.getElementsByTagName('p')[1].style.color = "blue";
+ /* or with querySelector
+      document.querySelectorAll('p')[1].style.color = "blue"; // 
+     document.querySelectorAll('p')[2].style.color = "blue"; //  
+ */    
+console.log(targetNumber)
+  }
+  
+  function checkGuess() {
+      const guess = parseInt(document.getElementById('guessInput').value, 10);
+      if (isNaN(guess) || guess < 1 || guess > 100) {
+          alert('Please enter a number between 1 and 100.');
+          return;
+      }
+      checkLowHigh(guess);
+  }
+
+  function checkLowHigh(guess) {
+    tries++;
+    triesLeft = MAXTRIES - tries; 
+    document.getElementById('tries').innerText = `You used ${tries} tries so far, ${triesLeft} tries left.`;
+
+    if (guess < targetNumber) {
+        document.getElementById('feedback').innerText = 'Too low! Try again.';
+    } else if (guess > targetNumber) {
+        document.getElementById('feedback').innerText = 'Too high! Try again.';
+    } else {
+        document.getElementById('feedback').innerText = `Correct! The number was ${targetNumber}. It took you ${tries} attempts. Click 'Restart Game' to play again.`;
+    }
+
+    document.getElementById('guessInput').value = '';
+    if (tries === MAXTRIES-1) {
+        document.getElementById('tries').style.color = "red";
+    }
+    if (tries === MAXTRIES) {
+        alert("You used all attempts, you lose.");
+        document.getElementById('tries').innerText = "";
+        startGame(); // Resets the game
+    }
+  }
+
+  // New function to provide a hint
+  function provideHint() {
+      let hint;
+      if (targetNumber % 2 === 0) {
+          hint = "even";
+      } else {
+          hint = "odd";
+      }
+    document.getElementById('feedback').innerText = `Hint: The number is ${hint}.`;
+  }
+
+  // Start a new game when the script loads for the first time
+  startGame(); 
+</script>
+</body>
+</html>
+
+
+
+
