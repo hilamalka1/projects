@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Asap&display=swap" rel="stylesheet">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body {
+            width: 100%;
+            height: 100vh;
+            background-color: #e0d6e9;
+            font-family: "Asap", sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            max-width: 405px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            background-color: whitesmoke;
+            border-radius: 5px;
+            border: 1px solid #d3d3d3;
+        }
+        .to-do-app h2 {
+            padding: 10px;
+            text-align: center;
+        }
+        .to-do-app input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #d3d3d3;
+            margin-bottom: 10px;
+        }
+        .to-do-app button {
+            width: 100%;
+            padding: 10px;
+            cursor: pointer;
+            border: 1px solid #d3d3d3;
+            border-radius: 5px;
+            background-color: whitesmoke;
+            margin-bottom: 10px;
+        }
+        .to-do-app button:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        .to-do-list {
+            margin-top: 20px;
+            padding: 0;
+            list-style: none;
+        }
+        .to-do-list li {
+            font-size: 20px;
+            background-color: whitesmoke;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #d3d3d3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="to-do-app">
+            <h2>To-do App</h2>
+            <input type="text" id="item" placeholder="Enter item...">
+            <button onclick="add()">Add Item</button>
+            <button onclick="del()">Clear all</button>
+        </div>
+        <ul class="to-do-list"></ul>
+    </div>
+    <script>
+        const ul = document.querySelector('ul');
+        const input = document.getElementById('item');
+        let itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
+
+        itemsArray.forEach(item => addTask(item));
+
+        function addTask(text) {
+            const li = document.createElement('li');
+            li.textContent = text;
+            ul.appendChild(li);
+        }
+
+        function add() {
+            if (input.value.trim() !== '') {
+                itemsArray.push(input.value);
+                localStorage.setItem('items', JSON.stringify(itemsArray));
+                addTask(input.value);
+                input.value = '';
+            }
+        }
+
+        function del() {
+            localStorage.removeItem('items');
+            ul.innerHTML = '';
+            itemsArray = [];
+        }
+    </script>
+</body>
+</html>
